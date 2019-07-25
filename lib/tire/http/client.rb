@@ -12,13 +12,13 @@ module Tire
           Response.new e.http_body, e.http_code
         end
 
-        def self.post(url, data)
+        def self.post(url, data, {:content_type => :json})
           perform ::RestClient.post(url, data)
         rescue ::RestClient::Exception => e
           Response.new e.http_body, e.http_code
         end
 
-        def self.put(url, data)
+        def self.put(url, data, {:content_type => :json})
           perform ::RestClient.put(url, data)
         rescue ::RestClient::Exception => e
           Response.new e.http_body, e.http_code

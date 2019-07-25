@@ -12,6 +12,7 @@ module Tire
 
         def self.get(url, data=nil)
           @client.url = url
+          @client.headers['Content-Type'] = 'application/json' if data
           @client.post_body = data
           # FIXME: Curb cannot post bodies with GET requests?
           #        Roy Fielding seems to approve:
@@ -22,6 +23,7 @@ module Tire
 
         def self.post(url, data)
           @client.url = url
+          @client.headers['Content-Type'] = 'application/json'
           @client.post_body = data
           @client.http_post
           Response.new @client.body_str, @client.response_code
@@ -29,6 +31,7 @@ module Tire
 
         def self.put(url, data)
           @client.url = url
+          @client.headers['Content-Type'] = 'application/json'
           @client.put_data = data
           @client.http_put
           Response.new @client.body_str, @client.response_code
