@@ -265,6 +265,8 @@ module Tire
     def get_type_from_document(document)
       old_verbose, $VERBOSE = $VERBOSE, nil # Silence Object#type deprecation warnings
       type = case
+        when (get_es_verion >= 6)
+          '_doc'
         when document.respond_to?(:document_type)
           document.document_type
         when document.is_a?(Hash)
@@ -296,6 +298,11 @@ module Tire
         when document.respond_to?(:to_indexed_json) then document.to_indexed_json
         else raise ArgumentError, "Please pass a JSON string or object with a 'to_indexed_json' method"
       end
+    end
+
+    def get_es_verion
+      resp = MultiJson.decode(Curl.get(Tire::Configuration.url).body_str)
+      (resp['version']['number'].to_i rescue 5)
     end
 
   end
